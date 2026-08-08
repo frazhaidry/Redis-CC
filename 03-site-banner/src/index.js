@@ -20,3 +20,18 @@ app.post('/banner', async (req, res) => {
   await redis.set(BANNER_KEY, banner || "No banner set");
   res.json({ message: 'Banner updated successfully' });
 });
+
+app.delete('/banner', async (req, res) => {
+  await redis.del(BANNER_KEY);
+  res.json({ success: true, message: 'Banner deleted successfully' });
+});
+
+app.get("/banner/exists", async( req, res) => {
+  const exists = await redis.exists(BANNER_KEY);
+  res.json({ exists: exists === 1 });
+})
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
